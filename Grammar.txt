@@ -1,0 +1,67 @@
+Program        ->  Class Classes
+Classes        ->  Class Classes
+                 | epsilon
+Class          ->  'class' CLASSNAME Inherit { Body }
+Inherit        ->  'inherits' CLASSNAME
+Body		   ->  Assignement ; Body
+				 | Method Body
+                 | epsilon 
+Assignement    ->  LowerNAME : TYPE Value
+                 |LowerNAME <- Expression
+Value		   ->  <- Expression
+                 | epsilon
+Method   	   ->  UpperNAME (Params) : TYPE Block
+Params 		   ->  Assignement Nextparam
+                 | epsilon
+Nextparam      ->  ,Params
+                 | epsilon
+Block          ->  { Nextexp }
+Nextexp		   ->  Expression ; Nextexp
+                 | epsilon
+Expression     ->  Let
+                 | If
+                 | While
+                 | New
+                 | CallMethods
+                 | Isvoid
+                 | Case
+                 | Aritmethicexp
+                 | Comparisonexp
+                 | Constants
+                 | Block
+Let            ->  let Params in Expression
+If             ->  if Expression then Expression Else fi
+While          ->  while Expression loop Expression pool
+Else           ->  else Expression
+                 | epsilon
+New            ->  new TYPE
+CallMethods    ->  WhoCalls.METHODNAME(ParamExp)
+                 | METHODNAME(ParamExp)
+ParamExp       ->  Expression NextParamExp
+                 | epsilon
+NextparamExp      ->  ,ParamExp
+                 | epsilon
+WhoCalls       ->  ID_FatherCall
+                 | (Expression)
+FatherCall     ->  @ID
+                 | epsilon
+Isvoid         ->  isvoid Expression
+Case           ->  case Expression of CaseParams esac
+CaseParams     ->  CaseBranch /n NextCaseBranch
+CaseBranch     ->  ID : TYPE <- Expression;
+                 | epsilon
+NextCaseBranch ->  CaseParams
+                 | epsilon
+Constants      ->  true
+                 | false
+                 | int
+                 | "string"
+Aritmethicexp  ->  NextPriority + Aritmethicexp
+                 | NextPriority - Aritmethicexp
+                 | ~Aritmethicexp
+                 | NextPriority
+NextPriority   ->  int * NextPriority
+                 | int / NextPriority
+                 | int
+                 | (Aritmethicexp)
+Comparisonexp  ->  
